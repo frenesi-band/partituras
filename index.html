@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partituras</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f0e8;
+    --ink: #1a1208;
+    --line: #c8b99a;
+    --accent: #8b3a1e;
+    --hover-bg: #ede5d4;
+    --shadow: rgba(26,18,8,0.10);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  /* Staff lines background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 28px,
+      var(--line) 28px,
+      var(--line) 29px
+    );
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2.5rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.2rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0.8;
+  }
+
+  /* Search */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 1.8rem;
+  }
+
+  #search {
+    width: 100%;
+    padding: 0.65rem 2.4rem 0.65rem 0.9rem;
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    border-radius: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #search::placeholder { opacity: 0.4; }
+  #search:focus { border-color: var(--accent); }
+
+  .search-icon {
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.4;
+    font-size: 0.9rem;
+    pointer-events: none;
+  }
+
+  /* File list */
+  #count {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 0.8rem;
+  }
+
+  #file-list {
+    list-style: none;
+  }
+
+  #file-list li {
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s;
+  }
+
+  #file-list li:first-child { border-top: 1px solid var(--line); }
+
+  #file-list li a {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.75rem 0.6rem;
+    text-decoration: none;
+    color: var(--ink);
+    transition: color 0.15s, background 0.15s;
+  }
+
+  #file-list li a:hover {
+    background: var(--hover-bg);
+    color: var(--accent);
+  }
+
+  .icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+
+  .filename {
+    flex: 1;
+    font-size: 0.88rem;
+    word-break: break-all;
+  }
+
+  .ext {
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  .empty {
+    font-size: 0.82rem;
+    opacity: 0.45;
+    padding: 2rem 0;
+    font-style: italic;
+  }
+
+  /* Error */
+  .error {
+    font-size: 0.82rem;
+    color: var(--accent);
+    padding: 1rem 0;
+    opacity: 0.85;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <h1>Par<em>ti</em>turas</h1>
+    <p class="subtitle">Explorador de archivos · /src</p>
+  </header>
+
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Buscar partitura…" autocomplete="off" spellcheck="false">
+    <span class="search-icon">♩</span>
+  </div>
+
+  <div id="count"></div>
+  <ul id="file-list"></ul>
+</div>
+
+<script>
+  // ─── Configuración ───────────────────────────────────────────
+  // Coloca aquí los nombres de tus PDFs dentro de /src,
+  // o reemplaza este array por una llamada a tu propio backend/API.
+  const PDF_DIR = '/src/';
+
+  // Opción 1: lista manual (más rápida, sin servidor)
+  const FILES = [
+    // Agrega aquí tus archivos, por ejemplo:
+    // 'bach-invencion-1.pdf',
+    // 'beethoven-op27-n2.pdf',
+  ];
+
+  // Opción 2: si tu servidor soporta listado de directorio,
+  // descomenta la función fetchFromServer() más abajo
+  // y comenta la llamada a render(FILES).
+
+  // ─────────────────────────────────────────────────────────────
+
+  const list = document.getElementById('file-list');
+  const countEl = document.getElementById('count');
+  const search = document.getElementById('search');
+
+  function basename(name) {
+    return name.replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
+  }
+
+  function render(files) {
+    const q = search.value.trim().toLowerCase();
+    const filtered = q ? files.filter(f => f.toLowerCase().includes(q)) : files;
+
+    countEl.textContent = `${filtered.length} partitura${filtered.length !== 1 ? 's' : ''}`;
+    list.innerHTML = '';
+
+    if (!filtered.length) {
+      list.innerHTML = `<li><span class="empty">${q ? 'Sin resultados para "' + q + '"' : 'No se encontraron archivos PDF en /src'}</span></li>`;
+      return;
+    }
+
+    filtered.forEach(file => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = PDF_DIR + file;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.innerHTML = `
+        <span class="icon">𝄞</span>
+        <span class="filename">${basename(file)}</span>
+        <span class="ext">PDF</span>
+      `;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+  }
+
+  // Opción 2: detecta automáticamente PDFs parseando el listado HTML del servidor
+  async function fetchFromServer() {
+    try {
+      const res = await fetch(PDF_DIR);
+      if (!res.ok) throw new Error('No se pudo leer el directorio');
+      const html = await res.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const links = [...doc.querySelectorAll('a[href]')]
+        .map(a => a.getAttribute('href'))
+        .filter(h => h.toLowerCase().endsWith('.pdf'))
+        .map(h => h.split('/').pop());
+      render(links);
+      // Guarda para el filtro
+      search.addEventListener('input', () => render(links));
+    } catch (e) {
+      list.innerHTML = `<li><span class="error">⚠ ${e.message}. Verifica que tu servidor permita listar /src o usa la lista manual en el script.</span></li>`;
+      countEl.textContent = '';
+    }
+  }
+
+  // Arranca
+  if (FILES.length) {
+    render(FILES);
+    search.addEventListener('input', () => render(FILES));
+  } else {
+    // Intenta leer el directorio automáticamente
+    fetchFromServer();
+    search.addEventListener('input', () => fetchFromServer());
+  }
+</script>
+</body>
+</html>
