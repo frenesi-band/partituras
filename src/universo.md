@@ -1,4 +1,4 @@
-*126, Ebm,  4/4*
+126 | Ebm | 4/4
 
 $Ebm$  
 A diario me das  

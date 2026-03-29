@@ -274,12 +274,21 @@ if (!file || !/\.md$/i.test(file)) {
       // Get the first line as subtitle
       const lines = text.split(/\r?\n/);
       const firstLine = lines.length > 0 ? lines[0] : '';
-      // Split at the first blank line (double line break)
-      const splitIndex = text.search(/\r?\n\s*\r?\n/);
+      // Find all blank line indices (indices of lines that are blank)
+      const blankIndices = [];
+      for (let i = 1; i < lines.length; ++i) {
+        if (/^\s*$/.test(lines[i])) blankIndices.push(i);
+      }
+      // Find the blank line closest to the middle
+      let splitAt = -1;
+      if (blankIndices.length > 0) {
+        const mid = Math.floor(lines.length / 2);
+        splitAt = blankIndices.reduce((prev, curr) => Math.abs(curr - mid) < Math.abs(prev - mid) ? curr : prev, blankIndices[0]);
+      }
       let part1 = '', part2 = '';
-      if (splitIndex !== -1) {
-        part1 = text.slice(0, splitIndex).trim();
-        part2 = text.slice(splitIndex).replace(/^\s+/, '');
+      if (splitAt !== -1) {
+        part1 = lines.slice(0, splitAt).join('\n');
+        part2 = lines.slice(splitAt + 1).join('\n');
       } else {
         part1 = text;
         part2 = '';
