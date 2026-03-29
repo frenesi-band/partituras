@@ -275,38 +275,52 @@ if (!file || !/\.md$/i.test(file)) {
       // Get the first line as subtitle
       const lines = text.split(/\r?\n/);
       const firstLine = lines.length > 0 ? lines[0] : '';
-      // Find all blank line indices (indices of lines that are blank)
+      // Work on content without the first line (used as subtitle)
+      const contentLines = lines.slice(1);
+      // Split into as many near-equal parts as width allows, using blank lines as split points
       const blankIndices = [];
-      for (let i = 1; i < lines.length; ++i) {
-        if (/^\s*$/.test(lines[i])) blankIndices.push(i);
+      for (let i = 0; i < contentLines.length; ++i) {
+        if (/^\s*$/.test(contentLines[i])) blankIndices.push(i);
       }
-      // Find the blank line closest to the middle
-      let splitAt = -1;
-      if (blankIndices.length > 0) {
-        const mid = Math.floor(lines.length / 2);
-        splitAt = blankIndices.reduce((prev, curr) => Math.abs(curr - mid) < Math.abs(prev - mid) ? curr : prev, blankIndices[0]);
+      const minColumnWidth = 360;
+      const maxByWidth = Math.max(1, Math.floor(window.innerWidth / minColumnWidth));
+      const desiredParts = Math.min(maxByWidth, blankIndices.length + 1);
+      const splitPoints = [];
+      let prevSplit = -1;
+      for (let k = 1; k < desiredParts; ++k) {
+        const target = Math.floor((contentLines.length * k) / desiredParts);
+        let bestIndex = -1;
+        let bestDistance = Number.POSITIVE_INFINITY;
+        for (let j = 0; j < blankIndices.length; ++j) {
+          const idx = blankIndices[j];
+          if (idx <= prevSplit) continue;
+          const distance = Math.abs(idx - target);
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            bestIndex = idx;
+          }
+        }
+        if (bestIndex === -1) break;
+        splitPoints.push(bestIndex);
+        prevSplit = bestIndex;
       }
-      let part1 = '', part2 = '';
-      if (splitAt !== -1) {
-        part1 = lines.slice(0, splitAt).join('\n');
-        part2 = lines.slice(splitAt + 1).join('\n');
-      } else {
-        part1 = text;
-        part2 = '';
+      const parts = [];
+      let start = 0;
+      for (let i = 0; i < splitPoints.length; ++i) {
+        const end = splitPoints[i];
+        const part = contentLines.slice(start, end).join('\n').trim();
+        if (part) parts.push(part);
+        start = end + 1;
       }
-      // Remove the first line from part1 if present
-      if (part1.startsWith(firstLine)) {
-        part1 = part1.slice(firstLine.length).replace(/^\s+/, '');
-      }
-      // Render each part
-      const html1 = marked.parse(part1);
-      const html2 = marked.parse(part2);
+      const lastPart = contentLines.slice(start).join('\n').trim();
+      if (lastPart) parts.push(lastPart);
+      if (parts.length === 0) parts.push('');
+      const columnsHtml = parts.map((part, index) => `<div class="md-col md-col-${index + 1}">${marked.parse(part)}</div>`).join('');
       // Responsive two-column layout
       const container = document.getElementById('md-container');
       container.innerHTML = `
-        <div class="md-content md-split">
-          <div class="md-col md-col-1">${html1}</div>
-          <div class="md-col md-col-2">${html2}</div>
+        <div class="md-content md-split" style="--md-cols: ${parts.length};">
+          ${columnsHtml}
         </div>
       `;
       // Add subtitle under the page title
@@ -333,16 +347,16 @@ if (!file || !/\.md$/i.test(file)) {
       // Add responsive CSS for split view
       document.getElementById('split-md-style').textContent = `
         .md-split {
-          display: flex;
+          display: grid;
+          grid-template-columns: repeat(var(--md-cols, 1), minmax(0, 1fr));
           gap: 2.5rem;
         }
         .md-col {
-          flex: 1 1 0;
           min-width: 0;
         }
         @media (max-width: 600px) {
           .md-split {
-            flex-direction: column;
+            grid-template-columns: 1fr;
             gap: 0;
           }
           .md-col {
