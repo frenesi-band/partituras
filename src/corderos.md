@@ -1,3 +1,8 @@
+120 BPM
+Em
+
+[ 𝄽 ] [ 𝄽 ] [ 𝄽 ] [ 𝄽 ]
+
 INTRO
 EM- BM- GM -BM X2
 EM- BM-
