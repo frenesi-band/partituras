@@ -1,5 +1,5 @@
-$126bpm|Ebm|4/4$  
-$Ebm$ ($Bb$ | $C$ | $Db$)  
+$126bpm|E\flat m|4/4$  
+$E\flat m$ ($Bb$ | $C$ | $Db$)  
 A diario me das  
 Razones para olvidar  
 Las cosas que  
@@ -9,9 +9,9 @@ $Ab7$ | $Bb4$
 Universo cruel   
 Vas destrozando sueños
 
-$Ebm$ ($Bb$ | $C$ | $Db$) $x4$  
+$E\flat m$ ($Bb$ | $C$ | $Db$) $x4$  
 
-$Ebm$ ($Bb$ | $C$ | $Db$)  
+$E\flat m$ ($Bb$ | $C$ | $Db$)  
 Transpiro por vos  
 Y lloro por los demas  
 Se que no es tu voz  
@@ -21,9 +21,9 @@ $Ab7$ | $Bb4$
 Mis heridas van  
 Cicatrizando ciclos
 
-$Ebm$ ($Bb$ | $C$ | $Db$) $x4$  
+$E\flat m$ ($Bb$ | $C$ | $Db$) $x4$  
 
-$Ebm$ ($Bb$ | $C$ | $Db$)  
+$E\flat m$ ($Bb$ | $C$ | $Db$)  
 Me dejo caer  
 En tus brazos otra vez  
 Quizás esta vez  
@@ -33,14 +33,17 @@ $Ab7$ | $Bb4$
 Paranoias van   
 Alimentando miedos
 
+$E\flat m$ | $E\flat m7$ | $E\flat m6$ | $E\flat m$  
+$E\flat m$ | $E\flat m^{add9}$ | $E\flat m$ | $E\flat sus4$
+
 [ 𝄽 ] [ 𝄽 ] [ 𝄽 ] [ 𝄽 ]
 
 $Ab7$
 
-$Ebm$ | $Ebm$ | $Abm$ | $Bbm$  
-$Ebm$ | $Ebm$ | $Abm$ | $Bbm$  
+$E\flat m$ | $E\flat m$ | $Abm$ | $Bbm$  
+$E\flat m$ | $E\flat m$ | $Abm$ | $Bbm$  
 
-$Ebm$ ($Bb$ | $C$ | $Db$)  
+$E\flat m$ ($Bb$ | $C$ | $Db$)  
 Te debo dejar  
 Mis notas y volverás  
 Buscando ayuda  
@@ -50,7 +53,7 @@ $Ab7$ | $Bb4$
 Hay mil peligros aquí  
 Y quien lastima sos vos
 
-$Ebm$ ($Bb$ | $C$ | $Db$)  
+$E\flat m$ ($Bb$ | $C$ | $Db$)  
 Pero al final  
 Tu discípulo mas fiel  
 Lo vuelve a intentar  
