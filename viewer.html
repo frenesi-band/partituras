@@ -176,6 +176,14 @@ nav {
   .page { padding: 6rem 1.2rem 4rem; }
   .page-title { font-size: 2.5rem; }
 }
+.page-subtitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  color: var(--warm);
+  margin-bottom: 0.5rem;
+  margin-top: 0.2rem;
+  letter-spacing: 0.01em;
+}
 </style>
 </head>
 <body>
@@ -263,14 +271,26 @@ if (!file || !/\.md$/i.test(file)) {
 
   fetchText('src/' + file)
     .then(text => {
-      // Split the markdown text in half by lines
+      // Get the first line as subtitle
       const lines = text.split(/\r?\n/);
-      const mid = Math.ceil(lines.length / 2);
-      const firstHalf = lines.slice(0, mid).join('\n');
-      const secondHalf = lines.slice(mid).join('\n');
-      // Render each half
-      const html1 = marked.parse(firstHalf);
-      const html2 = marked.parse(secondHalf);
+      const firstLine = lines.length > 0 ? lines[0] : '';
+      // Split at the first blank line (double line break)
+      const splitIndex = text.search(/\r?\n\s*\r?\n/);
+      let part1 = '', part2 = '';
+      if (splitIndex !== -1) {
+        part1 = text.slice(0, splitIndex).trim();
+        part2 = text.slice(splitIndex).replace(/^\s+/, '');
+      } else {
+        part1 = text;
+        part2 = '';
+      }
+      // Remove the first line from part1 if present
+      if (part1.startsWith(firstLine)) {
+        part1 = part1.slice(firstLine.length).replace(/^\s+/, '');
+      }
+      // Render each part
+      const html1 = marked.parse(part1);
+      const html2 = marked.parse(part2);
       // Responsive two-column layout
       const container = document.getElementById('md-container');
       container.innerHTML = `
@@ -279,6 +299,14 @@ if (!file || !/\.md$/i.test(file)) {
           <div class="md-col md-col-2">${html2}</div>
         </div>
       `;
+      // Add subtitle under the page title
+      const header = document.querySelector('.page-header');
+      if (header && !header.querySelector('.page-subtitle')) {
+        const subtitle = document.createElement('div');
+        subtitle.className = 'page-subtitle';
+        subtitle.textContent = firstLine;
+        header.insertBefore(subtitle, header.querySelector('.page-divider'));
+      }
       // Add responsive CSS for split view
       document.getElementById('split-md-style').textContent = `
         .md-split {
