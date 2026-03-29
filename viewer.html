@@ -191,6 +191,7 @@ nav {
     <hr class="page-divider">
   </header>
   <div id="md-container" class="md-body"></div>
+  <style id="split-md-style"></style>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -262,8 +263,43 @@ if (!file || !/\.md$/i.test(file)) {
 
   fetchText('src/' + file)
     .then(text => {
-      document.getElementById('md-container').innerHTML = `<div class="md-content">${marked.parse(text)}</div>`;
-      renderMath(document.getElementById('md-container'));
+      // Split the markdown text in half by lines
+      const lines = text.split(/\r?\n/);
+      const mid = Math.ceil(lines.length / 2);
+      const firstHalf = lines.slice(0, mid).join('\n');
+      const secondHalf = lines.slice(mid).join('\n');
+      // Render each half
+      const html1 = marked.parse(firstHalf);
+      const html2 = marked.parse(secondHalf);
+      // Responsive two-column layout
+      const container = document.getElementById('md-container');
+      container.innerHTML = `
+        <div class="md-content md-split">
+          <div class="md-col md-col-1">${html1}</div>
+          <div class="md-col md-col-2">${html2}</div>
+        </div>
+      `;
+      // Add responsive CSS for split view
+      document.getElementById('split-md-style').textContent = `
+        .md-split {
+          display: flex;
+          gap: 2.5rem;
+        }
+        .md-col {
+          flex: 1 1 0;
+          min-width: 0;
+        }
+        @media (max-width: 900px) {
+          .md-split {
+            flex-direction: column;
+            gap: 0;
+          }
+          .md-col {
+            margin-bottom: 2.5rem;
+          }
+        }
+      `;
+      renderMath(container);
       window.scrollTo(0, 0);
     })
     .catch(error => {

@@ -1,45 +1,61 @@
-*126,Ebm,4/4*
+*126, Ebm,  4/4*
 
-Ebm&nbsp;$Ebm$
-A diario me das
-Razones para olvidar
-Las cosas que
-Siempre causaste en mi  
+$Ebm$  
+A diario me das  
+Razones para olvidar  
+Las cosas que  
+Siempre causaste en mi
 
-Universo cruel
+$Ab7$&nbsp;$Bb4$  
+Universo cruel  
+$Ab7$&nbsp;$Bb4$  
 Vas destrozando sueños
 
-Transpiro por vos
-Y lloro por los demas
-Se que no es tu voz
+$Ebm$  
+Transpiro por vos  
+Y lloro por los demas  
+Se que no es tu voz  
 La que me va a suplicar 
 
-Mis heridas van
+$Ab7$&nbsp;$Bb4$  
+Mis heridas van  
+$Ab7$&nbsp;$Bb4$  
 Cicatrizando ciclos
 
-Me dejo caer
-En tus brazos otra vez
-Quizás esta vez
+$Ebm$  
+Me dejo caer  
+En tus brazos otra vez  
+Quizás esta vez  
 Lograré despertar
 
-Paranoias van
+$Ab7$&nbsp;$Bb4$  
+Paranoias van  
+$Ab7$&nbsp;$Bb4$  
 Alimentando miedos
 
-Te debo dejar
-Mis notas y volverás
-Buscando ayuda
+$Ebm$  
+Te debo dejar  
+Mis notas y volverás  
+Buscando ayuda  
 Sin aceptar la verdad
 
-Hay mil peligros aquí
+$Ab7$&nbsp;$Bb4$  
+Hay mil peligros aquí  
+$Ab7$&nbsp;$Bb4$  
 Y quien lastima sos vos
 
-Pero al final
-Tu discípulo mas fiel
-Lo vuelve a intentar
+$Ebm$  
+Pero al final  
+Tu discípulo mas fiel  
+Lo vuelve a intentar  
 Para volver a caer
 
-Poco a poco voy
+$Ab7$&nbsp;$Bb4$  
+Poco a poco voy  
+$Ab7$&nbsp;$Bb4$  
 Quemando mi pasado
 
-Poco a poco voy
+$Ab7$&nbsp;$Bb4$  
+Poco a poco voy  
+$Ab7$&nbsp;$Bb4$  
 Dejando mas cenizas
