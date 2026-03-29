@@ -179,7 +179,7 @@ nav {
 </head>
 <body>
 <nav>
-  <a href="../index.html" class="nav-back">
+  <a href="index.html" class="nav-back">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
     Volver
   </a>
@@ -193,14 +193,8 @@ nav {
 </main>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-function getRequestedFile() {
-  const segments = window.location.pathname.split('/').filter(Boolean);
-  if (!segments.length) return null;
-  let fileName = segments[segments.length - 1];
-  if (fileName.toLowerCase() === 'index.html' && segments.length > 1) {
-    fileName = segments[segments.length - 2];
-  }
-  return decodeURIComponent(fileName);
+function getQueryParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
 }
 function titleCase(str) {
   return str.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase());
@@ -212,7 +206,7 @@ function showError(message) {
   container.innerHTML = `<div class="error-state">⚠ ${message}</div>`;
 }
 
-const file = getRequestedFile();
+const file = getQueryParam('file');
 if (!file || !/\.md$/i.test(file)) {
   showError('No se especificó un archivo Markdown válido en la URL.');
 } else {
@@ -249,14 +243,14 @@ if (!file || !/\.md$/i.test(file)) {
     });
   }
 
-  fetchText('../src/' + file)
+  fetchText('src/' + file)
     .then(text => {
-      container.innerHTML = `<div class="md-content">${marked.parse(text)}</div>`;
+      document.getElementById('md-container').innerHTML = `<div class="md-content">${marked.parse(text)}</div>`;
       window.scrollTo(0, 0);
     })
     .catch(error => {
       if (window.location.protocol === 'file:') {
-        showError('El navegador está bloqueando el acceso a archivos locales. Abre el proyecto desde un servidor local (por ejemplo, `python -m http.server` o `npx http-server`) y vuelve a cargar la página.');
+        showError('El navegador está bloqueando el acceso a archivos locales. Abre el proyecto desde un servidor local (por ejemplo, python -m http.server o npx http-server) y vuelve a cargar la página.');
       } else {
         showError(error.message);
       }

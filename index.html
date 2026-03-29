@@ -772,7 +772,7 @@ function render(files) {
   filtered.forEach(file => {
     const li = document.createElement('li');
     const a  = document.createElement('a');
-    a.href   = encodeURI(file);
+    a.href   = `viewer.html?file=${encodeURIComponent(file)}`;
     a.innerHTML = `
       <span class="file-icon">𝄞</span>
       <span class="file-name">
