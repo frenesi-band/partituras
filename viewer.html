@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vista de Markdown — FRENESÍ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;700;800&family=Space+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c1: #a3aaae;
+  --c2: #565e64;
+  --c3: #333f46;
+  --c4: #27323c;
+  --c5: #0b1f28;
+  --cream: #e8e0d4;
+  --warm: #c9b99a;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  background: var(--c5);
+  color: var(--cream);
+  font-family: 'Syne', sans-serif;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 36px,
+    rgba(163,170,174,0.06) 36px,
+    rgba(163,170,174,0.06) 37px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(11,31,40,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(163,170,174,0.1);
+}
+.nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--c1);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.nav-back:hover { color: var(--cream); }
+.nav-back svg { transition: transform 0.3s; }
+.nav-back:hover svg { transform: translateX(-3px); }
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 8rem 2.5rem 6rem;
+}
+.page-header {
+  margin-bottom: 2rem;
+}
+.page-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  letter-spacing: 0.03em;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+.page-subtitle {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--c2);
+  text-transform: uppercase;
+}
+.md-body {
+  background: rgba(39,50,60,0.92);
+  border: 1px solid rgba(163,170,174,0.12);
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 28px 80px rgba(0,0,0,0.18);
+}
+.error-state {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.95rem;
+  color: #f2a39f;
+  line-height: 1.7;
+}
+.md-content { color: var(--cream); line-height: 1.85; }
+.md-content h1,
+.md-content h2,
+.md-content h3 {
+  margin-top: 2rem;
+}
+.md-content h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  letter-spacing: 0.05em;
+  color: var(--cream);
+  border-bottom: 1px solid rgba(163,170,174,0.15);
+  padding-bottom: 0.8rem;
+}
+.md-content h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem;
+  color: var(--cream);
+}
+.md-content h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--warm);
+  text-transform: uppercase;
+}
+.md-content p,
+.md-content li,
+.md-content td,
+.md-content th {
+  font-family: 'Syne', sans-serif;
+  color: var(--c1);
+}
+.md-content p { margin-bottom: 1.25rem; }
+.md-content code {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem;
+  background: rgba(163,170,174,0.08);
+  padding: 0.15em 0.4em;
+  color: var(--warm);
+}
+.md-content pre {
+  background: rgba(11,31,40,0.6);
+  border: 1px solid rgba(163,170,174,0.1);
+  padding: 1.2rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+.md-content blockquote {
+  border-left: 2px solid var(--warm);
+  padding-left: 1.2rem;
+  margin: 1.5rem 0;
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  color: var(--c1);
+}
+.md-content a {
+  color: var(--warm);
+  text-decoration: underline;
+}
+@media (max-width: 680px) {
+  .page { padding: 6rem 1.2rem 4rem; }
+  .page-title { font-size: 2.5rem; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Volver
+  </a>
+</nav>
+<main class="page">
+  <header class="page-header">
+    <h1 class="page-title" id="page-title">Cargando…</h1>
+    <p class="page-subtitle">Vista de la partitura markdown</p>
+  </header>
+  <div id="md-container" class="md-body"></div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+function getQueryParam(name) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+function titleCase(str) {
+  return str.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase());
+}
+function showError(message) {
+  const container = document.getElementById('md-container');
+  const title = document.getElementById('page-title');
+  title.textContent = 'Error';
+  container.innerHTML = `<div class="error-state">⚠ ${message}</div>`;
+}
+
+const file = getQueryParam('file');
+if (!file || !/\.md$/i.test(file)) {
+  showError('No se especificó un archivo Markdown válido en la URL.');
+} else {
+  const title = document.getElementById('page-title');
+  title.textContent = titleCase(file.replace(/\.md$/i, '').replace(/[-_]/g, ' '));
+  const container = document.getElementById('md-container');
+  container.innerHTML = '<p class="error-state">Cargando markdown…</p>';
+
+  function loadWithXHR(url) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.onload = () => {
+        if (xhr.status === 200 || xhr.status === 0) {
+          resolve(xhr.responseText);
+        } else {
+          reject(new Error('No se pudo cargar el archivo (XHR).'));
+        }
+      };
+      xhr.onerror = () => reject(new Error('No se pudo cargar el archivo (XHR).'));
+      xhr.send();
+    });
+  }
+
+  function fetchText(url) {
+    return fetch(url).then(response => {
+      if (!response.ok) throw new Error('No se pudo cargar el archivo.');
+      return response.text();
+    }).catch(error => {
+      if (window.location.protocol === 'file:' || error.message.includes('NetworkError') || error.message === 'Failed to fetch') {
+        return loadWithXHR(url);
+      }
+      throw error;
+    });
+  }
+
+  fetchText('src/' + file)
+    .then(text => {
+      container.innerHTML = `<div class="md-content">${marked.parse(text)}</div>`;
+      window.scrollTo(0, 0);
+    })
+    .catch(error => {
+      if (window.location.protocol === 'file:') {
+        showError('El navegador está bloqueando el acceso a archivos locales. Abre el proyecto desde un servidor local (por ejemplo, `python -m http.server` o `npx http-server`) y vuelve a cargar la página.');
+      } else {
+        showError(error.message);
+      }
+    });
+}
+</script>
+</body>
+</html>
