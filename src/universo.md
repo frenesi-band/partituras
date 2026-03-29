@@ -9,7 +9,8 @@ $Ab7$ | $Bb4$
 Universo cruel   
 Vas destrozando sueños
 
-$|:$ $Ebm$ ($Bb$ | $C$ | $Db$) $:|$ (x4)
+$Ebm$ ($Bb$ | $C$ | $Db$)  
+(x4)
 
 $Ebm$ ($Bb$ | $C$ | $Db$)  
 Transpiro por vos  
@@ -21,9 +22,6 @@ $Ab7$ | $Bb4$
 Mis heridas van  
 Cicatrizando ciclos
 
-
-$|:$ $Ebm$ ($Bb$ | $C$ | $Db$) $:|$ (x4)
-
 $Ebm$ ($Bb$ | $C$ | $Db$)  
 Me dejo caer  
 En tus brazos otra vez  
@@ -33,8 +31,6 @@ Lograré despertar
 $Ab7$ | $Bb4$  
 Paranoias van   
 Alimentando miedos
-
-$|:$ $Ebm$ ($Bb$ | $C$ | $Db$) $:|$ (x4)
 
 [ 𝄽 ] [ 𝄽 ] [ 𝄽 ] [ 𝄽 ]
 
@@ -52,8 +48,6 @@ Sin aceptar la verdad
 $Ab7$ | $Bb4$  
 Hay mil peligros aquí  
 Y quien lastima sos vos
-
-$|:$ $Ebm$ ($Bb$ | $C$ | $Db$) $:|$ (x4)
 
 $Ebm$ ($Bb$ | $C$ | $Db$)  
 Pero al final  
