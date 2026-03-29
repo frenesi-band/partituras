@@ -282,7 +282,7 @@ if (!file || !/\.md$/i.test(file)) {
       for (let i = 0; i < contentLines.length; ++i) {
         if (/^\s*$/.test(contentLines[i])) blankIndices.push(i);
       }
-      const minColumnWidth = 360;
+      const minColumnWidth = 280;
       const maxByWidth = Math.max(1, Math.floor(window.innerWidth / minColumnWidth));
       const desiredParts = Math.min(maxByWidth, blankIndices.length + 1);
       const splitPoints = [];
@@ -354,7 +354,7 @@ if (!file || !/\.md$/i.test(file)) {
         .md-col {
           min-width: 0;
         }
-        @media (max-width: 100px) {
+        @media (max-width: 600px) {
           .md-split {
             grid-template-columns: 1fr;
             gap: 0;
