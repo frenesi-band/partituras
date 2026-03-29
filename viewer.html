@@ -6,6 +6,7 @@
 <title>Vista de Markdown — FRENESÍ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;700;800&family=Space+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
 <style>
 :root {
   --c1: #a3aaae;
@@ -192,6 +193,8 @@ nav {
   <div id="md-container" class="md-body"></div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
 <script>
 function getQueryParam(name) {
   return new URLSearchParams(window.location.search).get(name);
@@ -243,9 +246,24 @@ if (!file || !/\.md$/i.test(file)) {
     });
   }
 
+  function renderMath(container) {
+    if (typeof renderMathInElement !== 'function') return;
+    renderMathInElement(container, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      throwOnError: false,
+      errorColor: '#f2a39f'
+    });
+  }
+
   fetchText('src/' + file)
     .then(text => {
       document.getElementById('md-container').innerHTML = `<div class="md-content">${marked.parse(text)}</div>`;
+      renderMath(document.getElementById('md-container'));
       window.scrollTo(0, 0);
     })
     .catch(error => {
