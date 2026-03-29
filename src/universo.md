@@ -9,7 +9,7 @@ $Ab7$ | $Bb4$
 Universo cruel   
 Vas destrozando sueños
 
-`|:$Ebm$ ($Bb$ | $C$ | $Db$):|` (x4)
+$|:$ $Ebm$ ($Bb$ | $C$ | $Db$) $:|$ (x4)
 
 $Ebm$ ($Bb$ | $C$ | $Db$)  
 Transpiro por vos  
@@ -22,8 +22,9 @@ Mis heridas van
 Cicatrizando ciclos
 
 
- $Ebm$ ($Bb$ | $C$ | $Db$)  x4  
- $Ebm$ ($Bb$ | $C$ | $Db$)  
+$|:$ $Ebm$ ($Bb$ | $C$ | $Db$) $:|$ (x4)
+
+$Ebm$ ($Bb$ | $C$ | $Db$)  
 Me dejo caer  
 En tus brazos otra vez  
 Quizás esta vez  
@@ -33,6 +34,8 @@ $Ab7$ | $Bb4$
 Paranoias van   
 Alimentando miedos
 
+$|:$ $Ebm$ ($Bb$ | $C$ | $Db$) $:|$ (x4)
+
 [ 𝄽 ] [ 𝄽 ] [ 𝄽 ] [ 𝄽 ]
 
 $Ab7$
@@ -40,7 +43,7 @@ $Ab7$
 $Ebm$ | $Ebm$ | $Abm$ | $Bbm$  
 $Ebm$ | $Ebm$ | $Abm$ | $Bbm$  
 
- $Ebm$ ($Bb$ | $C$ | $Db$)  
+$Ebm$ ($Bb$ | $C$ | $Db$)  
 Te debo dejar  
 Mis notas y volverás  
 Buscando ayuda  
@@ -50,7 +53,9 @@ $Ab7$ | $Bb4$
 Hay mil peligros aquí  
 Y quien lastima sos vos
 
- $Ebm$ ($Bb$ | $C$ | $Db$)  
+$|:$ $Ebm$ ($Bb$ | $C$ | $Db$) $:|$ (x4)
+
+$Ebm$ ($Bb$ | $C$ | $Db$)  
 Pero al final  
 Tu discípulo mas fiel  
 Lo vuelve a intentar  
