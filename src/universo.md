@@ -1,6 +1,6 @@
-126,Ebm,4/4
+*126,Ebm,4/4*
 
-$Ebm$&nbsp;$Ebm$
+Ebm&nbsp;$Ebm$
 A diario me das
 Razones para olvidar
 Las cosas que
