@@ -2,7 +2,7 @@
 Em
 
 [ 𝄽 ] [ 𝄽 ] [ 𝄽 ] [ 𝄽 ]
-asdasd
+
 INTRO
 EM- BM- GM -BM X2
 EM- BM-
