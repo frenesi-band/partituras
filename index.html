@@ -218,16 +218,52 @@ nav {
   animation: fadeUp 0.8s ease 0.8s forwards;
 }
 
-#file-list li {
+.folder-group {
+  margin-bottom: 1.1rem;
+  border: 1px solid rgba(163,170,174,0.1);
+  background: rgba(163,170,174,0.02);
+  overflow: hidden;
+}
+
+.folder-group-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem 0.8rem;
+  border-bottom: 1px solid rgba(163,170,174,0.08);
+}
+
+.folder-group-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+}
+
+.folder-group-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c2);
+}
+
+.folder-files {
+  list-style: none;
+}
+
+.folder-files li {
   border-bottom: 1px solid rgba(163,170,174,0.1);
   transition: background 0.2s;
 }
 
-#file-list li:first-child {
-  border-top: 1px solid rgba(163,170,174,0.1);
+.folder-files li:last-child {
+  border-bottom: none;
 }
 
-#file-list li a {
+.folder-files li a {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -239,7 +275,7 @@ nav {
   overflow: hidden;
 }
 
-#file-list li a::before {
+.folder-files li a::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -248,8 +284,8 @@ nav {
   transition: transform 0.35s ease;
 }
 
-#file-list li a:hover::before { transform: translateX(0); }
-#file-list li a:hover {
+.folder-files li a:hover::before { transform: translateX(0); }
+.folder-files li a:hover {
   color: var(--warm);
   padding-left: 1.5rem;
 }
@@ -291,7 +327,7 @@ nav {
   transition: border-color 0.2s, color 0.2s;
 }
 
-#file-list li a:hover .file-ext {
+.folder-files li a:hover .file-ext {
   border-color: var(--warm);
   color: var(--warm);
 }
@@ -303,9 +339,15 @@ nav {
   transition: transform 0.3s, color 0.2s;
 }
 
-#file-list li a:hover .file-arrow {
+.folder-files li a:hover .file-arrow {
   transform: translateX(4px);
   color: var(--warm);
+}
+
+@media (max-width: 600px) {
+  .folder-group-header { padding: 0.8rem 0.9rem 0.7rem; }
+  .folder-group-title { font-size: 0.6rem; }
+  .folder-files li a { padding: 1rem 0.7rem; }
 }
 
 /* Empty / Error states */
@@ -736,6 +778,16 @@ function titleCase(str) {
   return str.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase());
 }
 
+function folderLabel(file) {
+  const parts = file.replace(/\\/g, '/').split('/');
+  if (parts.length <= 1) return 'Raíz';
+  return parts.slice(0, -1).map(part => titleCase(part.replace(/[-_]/g, ' '))).join(' / ');
+}
+
+function sortFiles(files) {
+  return [...files].sort((a, b) => a.localeCompare(b, 'es'));
+}
+
 function render(files) {
   const q = search.value.trim().toLowerCase();
   const filtered = q ? files.filter(f => f.toLowerCase().includes(q)) : files;
@@ -755,22 +807,47 @@ function render(files) {
     return;
   }
 
-  filtered.forEach(file => {
-    const li = document.createElement('li');
-    const a  = document.createElement('a');
-    a.href   = `viewer.html?file=${encodeURIComponent(file)}`;
-    a.innerHTML = `
-      <span class="file-icon">𝄞</span>
-      <span class="file-name">
-        ${titleCase(basename(file))}
-        <span class="file-name-mono">${file}</span>
-      </span>
-      <span class="file-ext">MD</span>
-      <span class="file-arrow">→</span>
-    `;
-    li.appendChild(a);
-    list.appendChild(li);
+  const grouped = new Map();
+  sortFiles(filtered).forEach(file => {
+    const folder = folderLabel(file);
+    if (!grouped.has(folder)) grouped.set(folder, []);
+    grouped.get(folder).push(file);
   });
+
+  const folderNames = [...grouped.keys()].sort((a, b) => {
+    if (a === 'Raíz') return -1;
+    if (b === 'Raíz') return 1;
+    return a.localeCompare(b, 'es');
+  });
+
+  list.innerHTML = folderNames.map(folder => {
+    const folderFiles = grouped.get(folder);
+    const items = folderFiles.map(file => `
+      <li>
+        <a href="viewer.html?file=${encodeURIComponent(file)}">
+          <span class="file-icon">𝄞</span>
+          <span class="file-name">
+            ${titleCase(basename(file))}
+            <span class="file-name-mono">${file}</span>
+          </span>
+          <span class="file-ext">MD</span>
+          <span class="file-arrow">→</span>
+        </a>
+      </li>
+    `).join('');
+
+    return `
+      <li class="folder-group">
+        <div class="folder-group-header">
+          <span class="folder-group-title">${folder}</span>
+          <span class="folder-group-count">${folderFiles.length} archivo${folderFiles.length !== 1 ? 's' : ''}</span>
+        </div>
+        <ul class="folder-files">
+          ${items}
+        </ul>
+      </li>
+    `;
+  }).join('');
 }
 
 async function fetchFromServer() {
@@ -807,7 +884,7 @@ async function fetchFromServer() {
     }
   }
 
-  const orderedFiles = [...files].sort((a, b) => a.localeCompare(b, 'es'));
+  const orderedFiles = sortFiles(files);
   render(orderedFiles);
   search.addEventListener('input', () => render(orderedFiles));
 }
